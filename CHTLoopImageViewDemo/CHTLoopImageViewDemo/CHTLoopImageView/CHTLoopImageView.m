@@ -1,6 +1,6 @@
 //
 //  CHTLoopImageView.m
-//  CHTGithubDemo
+//  CHTLoopImageViewDemo
 //
 //  Created by mac on 16/8/28.
 //  Copyright © 2016年 Roy Chan. All rights reserved.
@@ -40,6 +40,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
     CHTImageType _imageType;
     NSInteger _imageCount;
     UIImageView *_tempView;
+    UIView *_contentView;
 }
 
 - (instancetype)init
@@ -213,6 +214,55 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
                                                          constant:0]
                            ]];
     
+    _contentView = [UIView new];
+    _contentView.backgroundColor = [UIColor clearColor];
+    [_scrollView addSubview:_contentView];
+    _contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_scrollView addConstraints:@[
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeLeft
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeLeft
+                                                              multiplier:1
+                                                                constant:0],
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeWidth
+                                                              multiplier:3
+                                                                constant:0],
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeRight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeRight
+                                                              multiplier:1
+                                                                constant:0],
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1
+                                                                constant:0],
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeHeight
+                                                              multiplier:1
+                                                                constant:0],
+                                  [NSLayoutConstraint constraintWithItem:_contentView
+                                                               attribute:NSLayoutAttributeBottom
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_scrollView
+                                                               attribute:NSLayoutAttributeBottom
+                                                              multiplier:1
+                                                                constant:0]
+                                  ]];
+    
     
     _imageViews = [NSMutableArray new];
     
@@ -233,7 +283,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
         
         [self setimageView:imageView atIndex:index];
         [_imageViews addObject:imageView];
-        [_scrollView addSubview:imageView];
+        [_contentView addSubview:imageView];
         
         imageView.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -250,39 +300,39 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
             leftConstraint = [NSLayoutConstraint constraintWithItem:imageView
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:_scrollView attribute:NSLayoutAttributeLeft
+                                                             toItem:_contentView attribute:NSLayoutAttributeLeft
                                                          multiplier:1
                                                            constant:0];
         }
         
-        [_scrollView addConstraints:@[
-                                      leftConstraint,
-                                      [NSLayoutConstraint constraintWithItem:imageView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:_scrollView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                  multiplier:1
-                                                                    constant:0],
-                                      [NSLayoutConstraint constraintWithItem:imageView
-                                                                   attribute:NSLayoutAttributeTop
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:_scrollView
-                                                                   attribute:NSLayoutAttributeTop
-                                                                  multiplier:1
-                                                                    constant:0],
-                                      [NSLayoutConstraint constraintWithItem:imageView
-                                                                   attribute:NSLayoutAttributeHeight
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:_scrollView
-                                                                   attribute:NSLayoutAttributeHeight
-                                                                  multiplier:1
-                                                                    constant:0]
-                                      ]];
+        [_contentView addConstraints:@[
+                                       leftConstraint,
+                                       [NSLayoutConstraint constraintWithItem:imageView
+                                                                    attribute:NSLayoutAttributeWidth
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:_contentView
+                                                                    attribute:NSLayoutAttributeWidth
+                                                                   multiplier:1.0 / 3.0
+                                                                     constant:0],
+                                       [NSLayoutConstraint constraintWithItem:imageView
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:_contentView
+                                                                    attribute:NSLayoutAttributeTop
+                                                                   multiplier:1
+                                                                     constant:0],
+                                       [NSLayoutConstraint constraintWithItem:imageView
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:_contentView
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                   multiplier:1
+                                                                     constant:0]
+                                       ]];
         
         _tempView = imageView;
     }
-
+    
     _scrollView.contentOffset = CGPointMake(CGRectGetWidth(_scrollView.frame), 0);
     
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, VIEW_HEIGHT - 30, VIEW_WIDTH, 30)];
@@ -320,7 +370,6 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
                                                        multiplier:1
                                                          constant:30]]];
     
-    [_scrollView layoutIfNeeded];
 }
 
 #pragma mark - action
@@ -457,7 +506,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
 - (void)layoutSubviews{
     
     [super layoutSubviews];
-    
+    _scrollView.contentSize = CGSizeMake(CGRectGetWidth(_scrollView.frame) * 3, CGRectGetHeight(_scrollView.frame));
     _scrollView.contentOffset = CGPointMake(CGRectGetWidth(_scrollView.frame), 0);
 }
 
