@@ -274,7 +274,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
         NSInteger index = 0;
         if (i == 0) index = _imageCount - 1;
         if (i == 1) index = 0;
-        if (i == 2) index = 1;
+        if (i == 2) index = _imageCount == 1 ? 0 : 1;
         
         imageView.tag = index + START_TAG;
         imageView.userInteractionEnabled = YES;
@@ -369,7 +369,10 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1
                                                          constant:30]]];
-    
+    if (_imageCount == 1) {
+        _scrollView.scrollEnabled = NO;
+        _autoScroll = NO;
+    }
 }
 
 #pragma mark - action

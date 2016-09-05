@@ -174,7 +174,6 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
     }
     
     _scrollView = [[UIScrollView alloc]init];
-    _scrollView.contentSize =CGSizeMake(VIEW_WIDTH * 3, VIEW_HEIGHT);
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
@@ -274,7 +273,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
         NSInteger index = 0;
         if (i == 0) index = _imageCount - 1;
         if (i == 1) index = 0;
-        if (i == 2) index = 1;
+        if (i == 2) index = _imageCount == 1 ? 0 : 1;
         
         imageView.tag = index + START_TAG;
         imageView.userInteractionEnabled = YES;
@@ -338,6 +337,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, VIEW_HEIGHT - 30, VIEW_WIDTH, 30)];
     _pageControl.numberOfPages = _imageCount;
     _pageControl.currentPage = 0;
+    _pageControl.hidesForSinglePage = YES;
     [self addSubview:_pageControl];
     
     [self addConstraints:@[
@@ -369,7 +369,10 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1
                                                          constant:30]]];
-    
+    if (_imageCount == 1) {
+        _scrollView.scrollEnabled = NO;
+        _autoScroll = NO;
+    }
 }
 
 #pragma mark - action
@@ -506,7 +509,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
 - (void)layoutSubviews{
     
     [super layoutSubviews];
-    _scrollView.contentSize = CGSizeMake(CGRectGetWidth(_scrollView.frame) * 3, CGRectGetHeight(_scrollView.frame));
+    _scrollView.contentSize = CGSizeMake(CGRectGetWidth(_scrollView.frame) * 3, 0);
     _scrollView.contentOffset = CGPointMake(CGRectGetWidth(_scrollView.frame), 0);
 }
 
