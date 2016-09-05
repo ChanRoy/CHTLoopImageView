@@ -1,6 +1,6 @@
 # CHTLoopImageView
 
-图片轮播视图，支持手写代码布局和AutoLayout。
+三个ImageView实现图片轮播视图，支持手写代码布局和AutoLayout。
 
 ![Flipboard playing multiple GIFs](https://github.com/ChanRoy/CHTLoopImageView/blob/master/CHTLoopImageView.gif)
 

@@ -340,6 +340,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
     _pageControl.hidesForSinglePage = YES;
     [self addSubview:_pageControl];
     
+    _pageControl.translatesAutoresizingMaskIntoConstraints = NO;
     [self addConstraints:@[
                            [NSLayoutConstraint constraintWithItem:_pageControl
                                                         attribute:NSLayoutAttributeBottom
