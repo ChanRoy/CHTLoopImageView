@@ -397,13 +397,19 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
     
     if (_imageType == CHTImageTypeLocal) {
         
-        UIImage *image = _images[index];
-        imageView.image = image;
+        if (_images.count > index) {
+            
+            UIImage *image = _images[index];
+            imageView.image = image;
+        }
     }
     else{
         
-        NSURL *url = [NSURL URLWithString:_imageUrls[index]];
-        [imageView sd_setImageWithURL:url placeholderImage:_placeholderImage];
+        if (_imageUrls.count > index) {
+            
+            NSURL *url = [NSURL URLWithString:_imageUrls[index]];
+            [imageView sd_setImageWithURL:url placeholderImage:_placeholderImage];
+        }
     }
     
 }

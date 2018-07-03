@@ -370,7 +370,7 @@ static CGFloat  const kDefaultScollTimeInterval = 3.0f;
                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1
                                                          constant:30]]];
-    if (_imageCount == 1) {
+    if (_imageCount == 1 || _imageCount == 0) {
         _scrollView.scrollEnabled = NO;
         _autoScroll = NO;
     }
