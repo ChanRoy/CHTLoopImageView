@@ -37,7 +37,7 @@
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
-@property (nonatomic, assign) id<CHTLoopImageViewDelegate> delegate;
+@property (nonatomic, weak) id<CHTLoopImageViewDelegate> delegate;
 
 /**
  *  init method
